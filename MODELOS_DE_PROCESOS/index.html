@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión de Talleres Creativos</title>
+    <link rel="stylesheet" href="index (2).css">
+</head>
+<body>
+    <h1>Sistema de Gestión de Talleres Creativos</h1>
+
+    <div class="container">
+        <div class="form-group">
+            <label for="nombreProfesor">Nombre del Profesor:</label>
+            <input type="text" id="nombreProfesor" placeholder="Escribe el nombre del profesor">
+        </div>
+        <div class="form-group">
+            <label for="cursoProfesor">Curso que Imparte:</label>
+            <select id="cursoProfesor">
+                <option value="Fotografía">Fotografía</option>
+                <option value="Arte">Arte</option>
+                <option value="Canto">Canto</option>
+                <option value="Música">Música</option>
+                <option value="Escultura">Escultura</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="diaClase">Día de la Clase:</label>
+            <select id="diaClase">
+                <option value="lunes">Lunes</option>
+                <option value="miércoles">Miércoles</option>
+                <option value="viernes">Viernes</option>
+                <option value="sábado">Sábado</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="horarioClase">Horario de la Clase:</label>
+            <select id="horarioClase"></select>
+        </div>
+        <button id="registrarProfesor">Registrar Profesor</button>
+
+        <h2>Horarios Entre Semana</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Horario</th>
+                    <th>Lunes</th>
+                    <th>Miércoles</th>
+                    <th>Viernes</th>
+                </tr>
+            </thead>
+            <tbody id="tablaSemana"></tbody>
+        </table>
+
+        <h2>Horarios de los Sábados</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Horario</th>
+                    <th>Curso</th>
+                    <th>Profesor</th>
+                </tr>
+            </thead>
+            <tbody id="tablaSabado"></tbody>
+        </table>
+
+        <!-- Botón para borrar localStorage -->
+        <button id="borrarStorage">Borrar Todo</button>
+    </div>
+
+    <script>
+        const horariosSemana = ["12:00 - 1:30", "1:30 - 3:00", "3:00 - 4:30", "4:30 - 6:00"];
+        const horariosSabado = ["8:30 - 10:00", "10:00 - 11:30", "11:30 - 1:00", "1:00 - 2:30"];
+
+        function actualizarHorariosDisponibles() {
+            const diaSeleccionado = document.getElementById('diaClase').value;
+            const selectHorario = document.getElementById('horarioClase');
+            selectHorario.innerHTML = '';
+
+            let horariosDisponibles = (diaSeleccionado === 'sábado') ? horariosSabado : horariosSemana;
+
+            horariosDisponibles.forEach(horario => {
+                let option = document.createElement('option');
+                option.value = horario;
+                option.textContent = horario;
+                selectHorario.appendChild(option);
+            });
+        }
+
+        function registrarProfesor() {
+            const nombre = document.getElementById('nombreProfesor').value.trim();
+            const curso = document.getElementById('cursoProfesor').value;
+            const dia = document.getElementById('diaClase').value;
+            const horario = document.getElementById('horarioClase').value;
+
+            if (!nombre || !curso || !dia || !horario) {
+                alert('Por favor, completa todos los campos.');
+                return;
+            }
+
+            let horarios = JSON.parse(localStorage.getItem('horarios')) || [];
+
+            // Filtrar las clases que ya están registradas para el horario y día seleccionado
+            const clasesEnHorario = horarios.filter(h => h.dia === dia && h.hora === horario);
+
+            // Comprobar si ya hay 20 estudiantes en ese horario
+            if (clasesEnHorario.length >= 20) {
+                alert('Lo sentimos, este horario ya ha alcanzado el cupo máximo de 20 estudiantes.');
+                return;
+            }
+
+            // Guardar el nuevo registro con el atributo 'cupos' siempre a 20
+            const nuevoRegistro = { 
+                dia, 
+                hora: horario, 
+                curso, 
+                profesor: nombre,
+                cupos: 20 // Atributo con un valor fijo de 20
+            };
+
+            horarios.push(nuevoRegistro);
+            localStorage.setItem('horarios', JSON.stringify(horarios));
+
+            console.log("Nuevo registro guardado:", nuevoRegistro);
+            mostrarHorarios();
+        }
+
+        function mostrarHorarios() {
+            const tablaSemana = document.getElementById('tablaSemana');
+            const tablaSabado = document.getElementById('tablaSabado');
+            tablaSemana.innerHTML = '';
+            tablaSabado.innerHTML = '';
+
+            let horarios = JSON.parse(localStorage.getItem('horarios')) || [];
+            console.log("Cargando horarios desde localStorage:", horarios);
+
+            // Crear filas para los horarios entre semana
+            horariosSemana.forEach(horario => {
+                const fila = document.createElement('tr');
+                fila.innerHTML = `<td>${horario}</td><td></td><td></td><td></td>`;
+
+                horarios.forEach(h => {
+                    if (h.hora === horario) {
+                        let index = ["lunes", "miércoles", "viernes"].indexOf(h.dia);
+                        if (index !== -1) {
+                            fila.cells[index + 1].innerText = `${h.curso} - ${h.profesor}`;
+                        }
+                    }
+                });
+
+                tablaSemana.appendChild(fila);
+            });
+
+            // Crear filas para los horarios de los sábados
+            horariosSabado.forEach(horario => {
+                const fila = document.createElement('tr');
+                fila.innerHTML = `<td>${horario}</td><td></td><td></td>`;
+
+                horarios.forEach(h => {
+                    if (h.hora === horario && h.dia === "sábado") {
+                        fila.cells[1].innerText = h.curso;
+                        fila.cells[2].innerText = h.profesor;
+                    }
+                });
+
+                tablaSabado.appendChild(fila);
+            });
+        }
+
+        document.getElementById('diaClase').addEventListener('change', actualizarHorariosDisponibles);
+        document.getElementById('registrarProfesor').addEventListener('click', registrarProfesor);
+
+        // Cargar horarios correctos al inicio
+        actualizarHorariosDisponibles();
+        mostrarHorarios();
+
+        // Borrar todo el localStorage
+        document.getElementById('borrarStorage').addEventListener('click', function() {
+            localStorage.clear();
+            alert("Todos los datos en localStorage han sido borrados.");
+            mostrarHorarios(); // Actualiza la tabla después de borrar
+        });
+    </script>
+
+    <button onclick="window.location.href='registro.html'">Ir a Registro</button>
+</body>
+</html>

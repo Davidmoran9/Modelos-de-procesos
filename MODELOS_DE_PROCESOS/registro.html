@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Estudiantes</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 32px;
+}
+
+.container {
+    background: #fff;
+    padding: 100px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    width: 1000px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #555;
+    font-size: 18px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #e65c00;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+    font-size: 18px;
+}
+
+thead {
+    background-color: #ff6600;
+    color: white;
+}
+
+td, th {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+
+</style>
+<body>
+    <h1>Registro de Estudiantes</h1>
+    <div class="container">
+        <div class="form-group">
+            <label for="nombreEstudiante">Nombre del Estudiante:</label>
+            <input type="text" id="nombreEstudiante" placeholder="Escribe tu nombre">
+        </div>
+        <div class="form-group">
+            <label for="seleccionarHorario">Seleccionar Tipo de Horario:</label>
+            <select id="seleccionarHorario">
+                <option value="">Elige un tipo de horario...</option>
+                <option value="semana">Entre Semana (Lunes, Miércoles, Viernes)</option>
+                <option value="sabado">Sábado Intensivo</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="seleccionarCurso">Seleccionar Curso:</label>
+            <select id="seleccionarCurso">
+                <option value="">Elige un curso...</option>
+                <option value="Fotografía">Fotografía</option>
+                <option value="Arte">Arte</option>
+                <option value="Canto">Canto</option>
+                <option value="Música">Música</option>
+                <option value="Escultura">Escultura</option>
+            </select>
+        </div>
+        <button id="registrarEstudiante">Registrar</button>
+
+        <h2>Horarios Disponibles (Semana)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Día</th>
+                    <th>Hora</th>
+                    <th>Curso</th>
+                    <th>Profesor</th>
+                    <th>Cupos</th>
+                </tr>
+            </thead>
+            <tbody id="tablaHorariosDisponiblesSemana"></tbody>
+        </table>
+
+        <h2>Horarios Disponibles (Sábado Intensivo)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Día</th>
+                    <th>Hora</th>
+                    <th>Curso</th>
+                    <th>Profesor</th>
+                    <th>Cupos</th>
+                </tr>
+            </thead>
+            <tbody id="tablaHorariosDisponiblesSabado"></tbody>
+        </table>
+
+        <button id="imprimirRegistros">Imprimir Registros</button>
+    </div>
+
+    <script>
+        function cargarHorarios() {
+            const horarios = JSON.parse(localStorage.getItem('horarios')) || [];
+            const tablaHorariosSemana = document.getElementById('tablaHorariosDisponiblesSemana');
+            const tablaHorariosSabado = document.getElementById('tablaHorariosDisponiblesSabado');
+
+            // Limpiar las tablas al cargar los nuevos horarios
+            tablaHorariosSemana.innerHTML = '';
+            tablaHorariosSabado.innerHTML = '';
+
+            // Mostrar los horarios filtrados en sus respectivas tablas
+            horarios.forEach(horario => {
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                    <td>${horario.dia}</td>
+                    <td>${horario.hora}</td>
+                    <td>${horario.curso}</td>
+                    <td>${horario.profesor}</td>
+                    <td>${horario.cupos}</td>
+                `;
+
+                // Comparación correcta teniendo en cuenta la tilde
+                if (horario.dia === 'sábado') {
+                    tablaHorariosSabado.appendChild(fila);  // Agregar a la tabla de sábado
+                } else {
+                    tablaHorariosSemana.appendChild(fila);  // Agregar a la tabla entre semana
+                }
+            });
+        }
+
+        function registrarEstudiante() {
+            const nombre = document.getElementById('nombreEstudiante').value.trim();
+            const tipoHorario = document.getElementById('seleccionarHorario').value;
+            const cursoSeleccionado = document.getElementById('seleccionarCurso').value;
+
+            if (!nombre || tipoHorario === '' || cursoSeleccionado === '') {
+                alert('Por favor, completa todos los campos.');
+                return;
+            }
+
+            const horarios = JSON.parse(localStorage.getItem('horarios')) || [];
+            const horariosSeleccionados = horarios.filter(horario => 
+                (tipoHorario === 'sabado' && horario.dia === 'Sábado' && horario.curso === cursoSeleccionado) || 
+                (tipoHorario === 'semana' && horario.dia !== 'Sábado' && horario.curso === cursoSeleccionado)
+            );
+
+            let cuposDisponibles = false;
+            let materiasMatriculadas = [];
+            horariosSeleccionados.forEach(horario => {
+                if (horario.cupos > 0) {
+                    cuposDisponibles = true;
+                    materiasMatriculadas.push(horario.curso);
+                    horario.cupos--;
+                }
+            });
+
+            if (!cuposDisponibles) {
+                alert('No hay cupos disponibles para el curso seleccionado en el horario elegido.');
+                return;
+            }
+
+            localStorage.setItem('horarios', JSON.stringify(horarios));
+            
+            const registros = JSON.parse(localStorage.getItem('registros')) || [];
+            registros.push({
+                nombre,
+                horario: tipoHorario === 'sabado' ? 'Sábado Intensivo' : 'Entre Semana',
+                curso: cursoSeleccionado
+            });
+            localStorage.setItem('registros', JSON.stringify(registros));
+
+            alert(`Registro exitoso. Cupos restantes en el horario seleccionado.`);
+            location.reload();
+        }
+
+        function imprimirRegistros() {
+            const registros = JSON.parse(localStorage.getItem('registros')) || [];
+
+            if (registros.length === 0) {
+                alert("No hay registros disponibles.");
+                return;
+            }
+
+            let contenido = "Registros de Estudiantes:\n\n";
+            registros.forEach((registro, index) => {
+                contenido += `Estudiante ${index + 1}:\n`;
+                contenido += `Nombre: ${registro.nombre}\n`;
+                contenido += `Horario: ${registro.horario}\n`;
+                contenido += `Curso: ${registro.curso}\n\n`;
+            });
+
+            const blob = new Blob([contenido], { type: 'text/plain' });
+            const enlace = document.createElement('a');
+            enlace.href = URL.createObjectURL(blob);
+            enlace.download = 'registros_estudiantes.txt';
+            enlace.click();
+        }
+
+        document.getElementById('registrarEstudiante').addEventListener('click', registrarEstudiante);
+        document.getElementById('imprimirRegistros').addEventListener('click', imprimirRegistros);
+        cargarHorarios();
+    </script>
+</body>
+</html>
