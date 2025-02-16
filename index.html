@@ -4,11 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Talleres Recreativos</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="index.css">
     <style>
+        :root {
+            --eggplant: #9e6a5e;
+            --mint: #63a375ff;
+            --sunset: #edc79bff;
+            --burnt-sienna: #d57a66ff;
+            --blush: #ca6680ff;
+            --hunyadi-yellow: #edc79bff; /* Color actualizado */
+            --light-coral: #d57a66ff; /* Color actualizado */
+            --tea-rose-red: #d45d79ff;
+        }
         body {
             font-family: Arial, sans-serif;
-            background-color: #212154;
+            background-color: white;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -16,7 +26,7 @@
             margin: 0;
         }
         .login-container {
-            background: #fff;
+            background: white;
             padding: 40px;
             border-radius: 15px;
             box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
@@ -24,24 +34,23 @@
             width: 400px;
         }
         .logo {
-    width: 120px;
-    height: 120px;
-    background-image: url('Logo.webp');
-    background-size: cover;
-    background-position: center;
-    border-radius: 50%;
-    margin: 0 auto 20px;
-}
-
-        h2 {
+            width: 120px;
+            height: 120px;
+            background-image: url('Logo.webp');
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+        }
+        h2, label {
             margin-bottom: 20px;
-            color: #444;
+            color: black;
         }
         label {
             display: block;
             text-align: left;
             margin: 10px 0 5px;
-            color: #666;
+            color: black;
         }
         input {
             width: 100%;
@@ -54,7 +63,7 @@
         button {
             width: 100%;
             padding: 12px;
-            background-color: #ff6600;
+            background-color: var(--hunyadi-yellow);
             color: white;
             border: none;
             border-radius: 8px;
@@ -63,17 +72,37 @@
             transition: 0.3s;
         }
         button:hover {
-            background-color: #e65c00;
+            background-color: var(--light-coral);
         }
         .register-link {
             margin-top: 15px;
             display: block;
             font-size: 14px;
-            color: #0073e6;
+            color: var(--tea-rose-red);
             text-decoration: none;
         }
         .register-link:hover {
             text-decoration: underline;
+        }
+        @media (max-width: 600px) {
+            .login-container {
+                width: 90%;
+                padding: 20px;
+            }
+            .logo {
+                width: 80px;
+                height: 80px;
+            }
+            h2 {
+                font-size: 24px;
+            }
+            input, button {
+                font-size: 14px;
+                padding: 8px;
+            }
+            .register-link {
+                font-size: 12px;
+            }
         }
     </style>
 </head>
@@ -90,8 +119,7 @@
             
             <button type="submit">Ingresar</button>
         </form>
-        <a href="registroAlumnos.html" class="register-link">Registrarse como estudiante</a>
-
+        <a href="estudiantes/registroAlumnos.html" class="register-link">Registrarse como estudiante</a>
     </div>
     
     <script>
@@ -100,10 +128,13 @@
             let username = document.getElementById('username').value.trim();
             let password = document.getElementById('password').value;
             
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            let user = users.find(user => (user.username === username || user.email === username) && user.password === password);
+            
             if (username === "Admin" && password === "admi123") {
-                window.location.href = "index.html";
-            } else if (username.includes("@") && password !== "") {
-                window.location.href = "registro.html";
+                window.location.href = "admin/index.html";
+            } else if (user) {
+                window.location.href = "estudiantes/index.html";
             } else {
                 alert("Credenciales incorrectas. Asegúrate de ingresar correctamente.");
             }

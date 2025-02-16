@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Gestión de Profesores</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Gestión de Profesores</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="profesores.html">Profesores</a></li>
+            <li><a href="horarios.html">Horarios</a></li>
+            <li><a href="cursos.html">Cursos</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section id="profesores">
+            <h2>Gestión de Profesores</h2>
+            <button onclick="toggleForm('profesorForm')">Agregar Profesor</button>
+            <form id="profesorForm" class="hidden" onsubmit="addProfesor(event)">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" required>
+                <label for="departamento">Departamento:</label>
+                <input type="text" id="departamento" required>
+                <button type="submit">Guardar</button>
+            </form>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Departamento</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="profesoresTableBody">
+                    <!-- Datos de profesores -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Administración de Modelos de Procesos</p>
+    </footer>
+    <div id="notification" class="hidden"></div>
+</body>
+</html>

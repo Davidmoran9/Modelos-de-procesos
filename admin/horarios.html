@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Gestión de Horarios</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Gestión de Horarios</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="profesores.html">Profesores</a></li>
+            <li><a href="horarios.html">Horarios</a></li>
+            <li><a href="cursos.html">Cursos</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section id="horarios">
+            <h2>Gestión de Horarios</h2>
+            <button onclick="toggleForm('horarioForm')">Agregar Horario</button>
+            <form id="horarioForm" class="hidden" onsubmit="addHorario(event)">
+                <label for="curso">Curso:</label>
+                <input type="text" id="curso" required>
+                <label for="horario">Horario:</label>
+                <input type="text" id="horario" required>
+                <button type="submit">Guardar</button>
+            </form>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Curso</th>
+                        <th>Horario</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="horariosTableBody">
+                    <!-- Datos de horarios -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Administración de Modelos de Procesos</p>
+    </footer>
+    <div id="notification" class="hidden"></div>
+</body>
+</html>
