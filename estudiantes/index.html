@@ -4,197 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estudiantes - Consulta de Horarios e Inscripción</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        :root {
-            --eggplant: #9e6a5e;
-            --mint: #63a375ff;
-            --sunset: #edc79bff;
-            --burnt-sienna: #d57a66ff;
-            --blush: #ca6680ff;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            background-color: var(--sunset);
-            margin: 0;
-            padding: 20px; /* Aumentar padding */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            text-align: center;
-        }
-        h1 {
-            color: white;
-            margin-bottom: 40px; /* Aumentar margin */
-            font-size: 36px; /* Tamaño aumentado */
-        }
-        .container {
-            background: white;
-            padding: 80px; /* Aumentar padding */
-            border-radius: 20px; /* Bordes más redondeados */
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Sombra mejorada */
-            width: 90%; /* Aumentar ancho */
-            max-width: 1000px; /* Ancho máximo aumentado */
-            text-align: center;
-            margin: 20px; /* Aumentar margin */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .form-group {
-            margin-bottom: 30px; /* Aumentar margin */
-            text-align: left;
-            width: 100%;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 10px; /* Aumentar margin */
-            color: black;
-            font-size: 20px; /* Tamaño aumentado */
-        }
-        select {
-            width: 100%;
-            padding: 18px; /* Aumentar padding */
-            border: 1px solid #ccc;
-            border-radius: 10px; /* Bordes más redondeados */
-            font-size: 18px;
-        }
-        button {
-            width: 100%;
-            padding: 20px; /* Aumentar padding */
-            background-color: var(--blush); /* Color actualizado */
-            color: white;
-            border: none;
-            border-radius: 10px; /* Bordes más redondeados */
-            font-size: 22px; /* Tamaño aumentado */
-            cursor: pointer;
-            transition: 0.3s;
-            margin-bottom: 20px; /* Asegurar espacio entre botones */
-        }
-        button:hover {
-            background-color: var(--burnt-sienna); /* Color actualizado */
-        }
-        .card-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .card {
-            background: white;
-            padding: 40px; /* Aumentar padding */
-            border-radius: 15px; /* Bordes más redondeados */
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-            width: 350px; /* Ancho aumentado */
-            text-align: left;
-        }
-        .card h3 {
-            margin: 0;
-            color: #333;
-            font-size: 24px;
-        }
-        .card p {
-            margin: 10px 0;
-            color: #666;
-            font-size: 18px;
-        }
-        .course-icon {
-            width: 30px;
-            height: 30px;
-            margin-right: 5px;
-        }
-        .course-selection {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            margin-bottom: 10px;
-            padding: 15px; /* Aumentar padding */
-            border: 1px solid #ccc;
-            border-radius: 10px; /* Bordes más redondeados */
-            transition: background-color 0.3s;
-            width: 150px;
-            justify-content: center;
-        }
-        .course-selection:hover {
-            background-color: var(--linen);
-        }
-        .course-selection.selected {
-            background-color: var(--blush); /* Color actualizado */
-            color: white;
-        }
-        .form-group .course-container {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: nowrap; /* Mostrar en una sola línea */
-            overflow-x: auto; /* Permitir desplazamiento horizontal */
-        }
-        @media (max-width: 768px) {
-            .container {
-                width: 90%;
-                padding: 30px;
-            }
+    <link rel="stylesheet" href="estiloE.css">
 
-            .card {
-                width: 100%;
-            }
-
-            button {
-                font-size: 18px;
-            }
-        }
-    </style>
 </head>
 <body>
     <header>
         <h1>Portal del Estudiante</h1>
     </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="profesores.html">Profesores</a></li>
+            <li><a href="horarios.html">Horarios</a></li>
+            <li><a href="cursos.html">Cursos</a></li>
+            <li><a href="../index.html">Salir</a></li>
+
+        </ul>
+    </nav>
     <main>
-        <div class="container">
-            <div class="form-group">
-                <label for="seleccionarHorario">Seleccionar Tipo de Horario:</label>
-                <select id="seleccionarHorario">
-                    <option value="">Elige un tipo de horario...</option>
-                    <option value="semana">Entre Semana (Lunes, Miércoles, Viernes)</option>
-                    <option value="sabado">Sábado Intensivo</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Seleccionar Curso:</label>
-                <div class="course-container">
-                    <div class="course-selection" data-curso="Fotografía">
-                        <img src="icons/fotografia.png" alt="Fotografía" class="course-icon"> <!-- Verifica que esta ruta sea correcta -->
-                        <span>Fotografía</span>
-                    </div>
-                    <div class="course-selection" data-curso="Arte">
-                        <img src="icons/arte.png" alt="Arte" class="course-icon"> <!-- Verifica que esta ruta sea correcta -->
-                        <span>Arte</span>
-                    </div>
-                    <div class="course-selection" data-curso="Canto">
-                        <img src="icons/canto.png" alt="Canto" class="course-icon"> <!-- Verifica que esta ruta sea correcta -->
-                        <span>Canto</span>
-                    </div>
-                    <div class="course-selection" data-curso="Música">
-                        <img src="icons/musica.png" alt="Música" class="course-icon"> <!-- Verifica que esta ruta sea correcta -->
-                        <span>Música</span>
-                    </div>
-                    <div class="course-selection" data-curso="Escultura">
-                        <img src="icons/escultura.png" alt="Escultura" class="course-icon"> <!-- Verifica que esta ruta sea correcta -->
-                        <span>Escultura</span>
-                    </div>
+        <div class="form-group">
+            <label for="seleccionarHorario">Seleccionar Tipo de Horario:</label>
+            <select id="seleccionarHorario">
+                <option value="">Elige un tipo de horario...</option>
+                <option value="semana">Entre Semana (Lunes, Miércoles, Viernes)</option>
+                <option value="sabado">Sábado Intensivo</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Seleccionar Curso:</label>
+            <div class="course-container">
+                <div class="course-selection" data-curso="Fotografía">
+                    <img src="icons/fotografia.png" alt="Fotografía" class="course-icon">
+                    <span>Fotografía</span>
+                </div>
+                <div class="course-selection" data-curso="Arte">
+                    <img src="icons/arte.png" alt="Arte" class="course-icon">
+                    <span>Arte</span>
+                </div>
+                <div class="course-selection" data-curso="Canto">
+                    <img src="icons/canto.png" alt="Canto" class="course-icon">
+                    <span>Canto</span>
+                </div>
+                <div class="course-selection" data-curso="Música">
+                    <img src="icons/musica.png" alt="Música" class="course-icon">
+                    <span>Música</span>
+                </div>
+                <div class="course-selection" data-curso="Escultura">
+                    <img src="icons/escultura.png" alt="Escultura" class="course-icon">
+                    <span>Escultura</span>
                 </div>
             </div>
-            <button id="registrarEstudiante">Registrar</button>
-
-            <h2>Horarios Disponibles</h2>
-            <div class="card-container" id="cardContainer"></div>
-
-            <button id="imprimirRegistros">Imprimir Registros</button>
         </div>
+        <button id="registrarEstudiante">Registrar</button>
+        
+        <h2>Horarios Disponibles</h2>
+        <div class="card-container" id="cardContainer"></div>
+
+        <h2>Horarios Inscritos</h2>
+        <div class="card-container" id="cardInscritos"></div>
+        <button id="borrarRegistros">Borrar Horarios Inscritos</button>
+        <button id="imprimirRegistros">Imprimir Registros</button>
+        <!-- Enlace oculto para la descarga de la foto QR.jpg -->
+        <a id="descargarFoto" href="QR.jpg" download style="display: none;"></a>
     </main>
     <footer>
         <p>&copy; 2023 Portal del Estudiante de Modelos de Procesos</p>
@@ -223,80 +94,115 @@
                 card.innerHTML = `
                     <h3>${horario.dia} - ${horario.hora}</h3>
                     <p>Curso: ${horario.curso}</p>
-                    <p>Profesor: ${horario.profesor}</p>
+                    <p style="color: transparent;">Profesor: ${horario.profesor}</p>
                     <p>Cupos: ${horario.cupos}</p>
                 `;
                 cardContainer.appendChild(card);
             });
         }
 
-        function registrarEstudiante() {
-            const tipoHorario = document.getElementById('seleccionarHorario').value;
+        function cargarHorariosInscritos() {
+            const registros = JSON.parse(localStorage.getItem('registros')) || [];
+            const cardInscritos = document.getElementById('cardInscritos');
 
-            if (tipoHorario === '' || selectedCourse === '') {
-                alert('Por favor, completa todos los campos.');
-                return;
-            }
+            cardInscritos.innerHTML = '';
 
-            const horarios = JSON.parse(localStorage.getItem('horarios')) || [];
-            const horariosSeleccionados = horarios.filter(horario => 
-                (tipoHorario === 'sabado' && horario.dia === 'Sábado' && horario.curso === selectedCourse) || 
-                (tipoHorario === 'semana' && horario.dia !== 'Sábado' && horario.curso === selectedCourse)
-            );
-
-            let cuposDisponibles = false;
-            let materiasMatriculadas = [];
-            horariosSeleccionados.forEach(horario => {
-                if (horario.cupos > 0) {
-                    cuposDisponibles = true;
-                    materiasMatriculadas.push(horario.curso);
-                    horario.cupos--;
+            registros.forEach(registro => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                let dias = '';
+                if (registro.horario === 'Entre Semana') {
+                    dias = 'Lunes, Miércoles, Viernes';
+                } else {
+                    dias = 'Sábado';
                 }
+                card.innerHTML = `
+                    <h3>${dias}</h3>
+                    <p>Curso: ${registro.curso}</p>
+                `;
+                cardInscritos.appendChild(card);
             });
-
-            if (!cuposDisponibles) {
-                alert('No hay cupos disponibles para el curso seleccionado en el horario elegido.');
-                return;
-            }
-
-            localStorage.setItem('horarios', JSON.stringify(horarios));
-            
-            const registros = JSON.parse(localStorage.getItem('registros')) || [];
-            registros.push({
-                horario: tipoHorario === 'sabado' ? 'Sábado Intensivo' : 'Entre Semana',
-                curso: selectedCourse
-            });
-            localStorage.setItem('registros', JSON.stringify(registros));
-
-            alert(`Registro exitoso. Cupos restantes en el horario seleccionado.`);
-            location.reload();
         }
 
-        function imprimirRegistros() {
-            const registros = JSON.parse(localStorage.getItem('registros')) || [];
+        function registrarEstudiante() {
+    const tipoHorario = document.getElementById('seleccionarHorario').value;
 
-            if (registros.length === 0) {
-                alert("No hay registros disponibles.");
-                return;
-            }
+    if (tipoHorario === '' || selectedCourse === '') {
+        alert('Por favor, completa todos los campos.');
+        return;
+    }
 
-            let contenido = "Registros de Estudiantes:\n\n";
-            registros.forEach((registro, index) => {
-                contenido += `Estudiante ${index + 1}:\n`;
-                contenido += `Horario: ${registro.horario}\n`;
-                contenido += `Curso: ${registro.curso}\n\n`;
-            });
+    const horarios = JSON.parse(localStorage.getItem('horarios')) || [];
+    let cuposDisponibles = false;
 
-            const blob = new Blob([contenido], { type: 'text/plain' });
-            const enlace = document.createElement('a');
-            enlace.href = URL.createObjectURL(blob);
-            enlace.download = 'registros_estudiantes.txt';
-            enlace.click();
+    // Filtrar los horarios según el tipo de horario y curso seleccionado
+    const horariosSeleccionados = horarios.filter(horario => 
+        (tipoHorario === 'sabado' && horario.dia === 'Sábado' && horario.curso === selectedCourse) ||
+        (tipoHorario === 'semana' && horario.dia !== 'Sábado' && horario.curso === selectedCourse)
+    );
+
+    // Verificar los cupos disponibles para los horarios seleccionados
+    horariosSeleccionados.forEach(horario => {
+        if (horario.cupos > 0) {
+            cuposDisponibles = true;
+            horario.cupos--;  // Reducir el cupo disponible
         }
+    });
+
+    // Si no hay cupos disponibles, mostrar un mensaje
+    if (!cuposDisponibles) {
+        alert('No hay cupos disponibles para el curso seleccionado en el horario elegido.');
+        return;
+    }
+
+    // Actualizar el localStorage con los nuevos cupos después de la inscripción
+    localStorage.setItem('horarios', JSON.stringify(horarios));
+
+    // Agregar el registro a los horarios inscritos
+    const registros = JSON.parse(localStorage.getItem('registros')) || [];
+    registros.push({
+        horario: tipoHorario === 'sabado' ? 'Sábado Intensivo' : 'Entre Semana',
+        curso: selectedCourse
+    });
+    localStorage.setItem('registros', JSON.stringify(registros));
+
+    alert('Registro exitoso.');
+    cargarHorariosInscritos(); // Actualizar la lista de horarios inscritos
+    cargarHorarios(); // Actualizar la lista de horarios disponibles con los cupos actualizados
+}
+
+
 
         document.getElementById('registrarEstudiante').addEventListener('click', registrarEstudiante);
-        document.getElementById('imprimirRegistros').addEventListener('click', imprimirRegistros);
+        document.getElementById('imprimirRegistros').addEventListener('click', function() {
+            const registros = JSON.parse(localStorage.getItem('registros')) || [];
+            console.log(registros);
+            document.getElementById('descargarFoto').click();
+        });
+
+        document.getElementById('borrarRegistros').addEventListener('click', function() {
+            const registros = JSON.parse(localStorage.getItem('registros')) || [];
+            const horarios = JSON.parse(localStorage.getItem('horarios')) || [];
+
+            // Restaurar los cupos de los horarios
+            registros.forEach(registro => {
+                horarios.forEach(horario => {
+                    if (horario.curso === registro.curso) {
+                        horario.cupos++; // Restablece el cupo
+                    }
+                });
+            });
+
+            // Borrar los registros
+            localStorage.removeItem('registros');
+            localStorage.setItem('horarios', JSON.stringify(horarios));
+
+            cargarHorarios(); // Actualiza los horarios disponibles
+            cargarHorariosInscritos(); // Actualiza la lista de horarios inscritos (vacía ahora)
+        });
+
         cargarHorarios();
+        cargarHorariosInscritos();
     </script>
 </body>
 </html>

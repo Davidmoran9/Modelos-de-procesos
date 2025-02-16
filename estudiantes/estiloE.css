@@ -1,0 +1,144 @@
+
+:root {
+    --eggplant: #9e6a5e;
+    --mint: #63a375ff;
+    --sunset: #edc79bff;
+    --burnt-sienna: #d57a66ff;
+    --blush: #ca6680ff;
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--sunset);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    text-align: center;
+    overflow-y: auto;
+}
+nav {
+background-color: var(--burnt-sienna);
+color: white;
+padding: 1rem;
+}
+
+nav ul {
+list-style: none;
+padding: 0;
+}
+
+nav ul li {
+display: inline;
+margin-right: 1rem;
+}
+
+nav ul li a {
+color: white;
+text-decoration: none;
+}
+
+h1 {
+    color: white;
+    margin-bottom: 40px;
+    font-size: 36px;
+}
+.form-group {
+    margin-bottom: 30px;
+    text-align: left;
+    width: 100%;
+}
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: black;
+    font-size: 20px;
+}
+select {
+    width: 100%;
+    padding: 18px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 18px;
+}
+button {
+    width: 100%;
+    padding: 20px;
+    background-color: var(--blush);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 22px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-bottom: 20px;
+}
+button:hover {
+    background-color: var(--burnt-sienna);
+}
+.course-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+}
+.course-selection {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+    justify-content: center;
+}
+.course-selection:hover {
+    background-color: var(--sunset);
+}
+.course-selection.selected {
+    background-color: var(--blush);
+    color: white;
+}
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+.card {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    width: 350px;
+    text-align: left;
+}
+.card h3 {
+    margin: 0;
+    color: #333;
+    font-size: 24px;
+}
+.card p {
+    margin: 10px 0;
+    color: #666;
+    font-size: 18px;
+}
+.course-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+@media (max-width: 768px) {
+    button {
+        font-size: 18px;
+    }
+    .course-selection {
+        width: 100px;
+        font-size: 14px;
+    }
+}
