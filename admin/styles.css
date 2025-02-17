@@ -6,11 +6,22 @@
     --success: #27AE60;     /* Botones de confirmación */
 }
 
+/* Estilos generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: var(--background);
     margin: 0;
     padding: 0;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -112,14 +123,14 @@ tr:nth-child(even) {
     background-color: #f8f9fa;
 }
 
+/* Footer */
 footer {
     background-color: var(--primary);
     color: white;
     text-align: center;
-    padding: 1rem;
-    
-    width: 100%;
-    bottom: 0;
+    padding: 0.5rem;
+    margin-top: auto;
+    font-size: 0.8rem;
 }
 
 #notification {
@@ -135,4 +146,49 @@ footer {
 
 #notification.hidden {
     display: none;
+}
+
+/* Estilos responsive */
+@media screen and (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        padding: 0.5rem;
+    }
+
+    nav ul li {
+        margin: 0.3rem 0;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    form {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    input, select {
+        width: 100%;
+    }
+
+    button {
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    main {
+        padding: 0.5rem;
+    }
 }
