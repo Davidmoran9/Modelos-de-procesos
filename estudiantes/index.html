@@ -441,34 +441,45 @@
 
         // Reemplazar la función registrarCurso
         function registrarCurso(curso, horario) {
-            const registros = JSON.parse(localStorage.getItem('registros')) || [];
-            
-            // Verificar si el curso ya está registrado
-            const cursoExistente = registros.find(r => r.curso === curso);
-            if (cursoExistente) {
-                alert(`Ya estás registrado en el curso de ${curso}`);
-                return;
-            }
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const currentUser = users.length > 0 ? users[users.length - 1] : null;
 
-            // Verificar conflicto de horarios
-            const horarioExistente = registros.find(r => r.horario === horario);
-            if (horarioExistente) {
-                alert(`Ya tienes un curso registrado en el horario ${horario} (${horarioExistente.curso})`);
-                return;
-            }
+    if (!currentUser) {
+        alert('Debes iniciar sesión para registrar un curso.');
+        window.location.href = "../index.html"; // Redirigir a la página de inicio de sesión
+        return;
+    }
 
-            // Agregar nuevo registro
-            registros.push({
-                curso: curso,
-                horario: horario,
-                fecha: new Date().toLocaleDateString()
-            });
-            localStorage.setItem('registros', JSON.stringify(registros));
-            
-            // Actualizar la tabla
-            actualizarTablaRegistros();
-            alert(`Te has registrado exitosamente en ${curso}`);
-        }
+    const registros = JSON.parse(localStorage.getItem('registros')) || [];
+
+    // Verificar si el curso ya está registrado
+    const cursoExistente = registros.find(r => r.curso === curso && r.estudiante === currentUser.fullName);
+    if (cursoExistente) {
+        alert(`Ya estás registrado en el curso de ${curso}`);
+        return;
+    }
+
+    // Verificar conflicto de horarios
+    const horarioExistente = registros.find(r => r.horario === horario && r.estudiante === currentUser.fullName);
+    if (horarioExistente) {
+        alert(`Ya tienes un curso registrado en el horario ${horario} (${horarioExistente.curso})`);
+        return;
+    }
+
+    // Agregar nuevo registro con el nombre del estudiante
+    registros.push({
+        curso: curso,
+        horario: horario,
+        fecha: new Date().toLocaleDateString(),
+        estudiante: currentUser.fullName // Guardar el nombre del estudiante en el registro
+    });
+
+    localStorage.setItem('registros', JSON.stringify(registros));
+    
+    actualizarTablaRegistros();
+    alert(`Te has registrado exitosamente en ${curso}`);
+}
+
 
         // Modificar la función actualizarTablaRegistros
         function actualizarTablaRegistros() {
