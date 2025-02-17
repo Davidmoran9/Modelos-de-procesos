@@ -1,27 +1,27 @@
 :root {
-    --eggplant: #9e6a5e;
-    --mint: #63a375ff;
-    --sunset: #edc79bff;
-    --burnt-sienna: #d57a66ff;
-    --blush: #ca6680ff;
+    --primary: #2C3E50;    /* Header y footer */
+    --secondary: #34495E;   /* Navegación */
+    --accent: #3498DB;      /* Botones y elementos interactivos */
+    --background: #ECF0F1;  /* Fondo general */
+    --success: #27AE60;     /* Botones de confirmación */
 }
 
 body {
     font-family: Arial, sans-serif;
-    background-color: var(--sunset);
+    background-color: var(--background);
     margin: 0;
     padding: 0;
 }
 
 header {
-    background-color: var(--eggplant);
+    background-color: var(--primary);
     color: white;
     padding: 1rem;
     text-align: center;
 }
 
 nav {
-    background-color: var(--burnt-sienna);
+    background-color: var(--secondary);
     color: white;
     padding: 1rem;
 }
@@ -39,6 +39,11 @@ nav ul li {
 nav ul li a {
     color: white;
     text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: var(--accent);
 }
 
 main {
@@ -50,25 +55,37 @@ section {
     margin: 1rem 0;
     padding: 1rem;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
     margin-top: 0;
+    color: var(--primary);
 }
 
 button {
-    background-color: var(--blush);
+    background-color: var(--accent);
     color: white;
     border: none;
     padding: 0.5rem 1rem;
     margin: 0.5rem 0;
     cursor: pointer;
     border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: var(--burnt-sienna);
+    background-color: #2980b9; /* Un tono más oscuro del accent color */
+}
+
+button.success, 
+.guardar-btn {
+    background-color: var(--success);
+}
+
+button.success:hover,
+.guardar-btn:hover {
+    background-color: #219a52; /* Un tono más oscuro del success color */
 }
 
 table {
@@ -87,11 +104,16 @@ th, td {
 }
 
 th {
-    background-color: var(--sunset);
+    background-color: var(--secondary);
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f8f9fa;
 }
 
 footer {
-    background-color: var(--eggplant);
+    background-color: var(--primary);
     color: white;
     text-align: center;
     padding: 1rem;
@@ -104,11 +126,11 @@ footer {
     position: fixed;
     top: 1rem;
     right: 1rem;
-    background-color: var(--blush);
+    background-color: var(--accent);
     color: white;
     padding: 1rem;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 #notification.hidden {

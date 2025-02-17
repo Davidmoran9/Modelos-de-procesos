@@ -1,4 +1,3 @@
-
 document.getElementById('registerForm').addEventListener('submit', function(event) {
     event.preventDefault();
     
@@ -120,3 +119,19 @@ function imprimirRegistros() {
 document.getElementById('registrarEstudiante').addEventListener('click', registrarEstudiante);
 document.getElementById('imprimirRegistros').addEventListener('click', imprimirRegistros);
 cargarHorarios();
+
+// Agregar estas funciones al final del archivo
+function getCurrentUser() {
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    return users[users.length - 1];
+}
+
+function verificarSesion() {
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+        window.location.href = '../index.html';
+    }
+}
+
+// Verificar sesión cuando se carga la página
+document.addEventListener('DOMContentLoaded', verificarSesion);

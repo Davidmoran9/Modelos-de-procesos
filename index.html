@@ -7,32 +7,32 @@
     <link rel="stylesheet" href="index.css">
     <style>
         :root {
-            --eggplant: #9e6a5e;
-            --mint: #63a375ff;
-            --sunset: #edc79bff;
-            --burnt-sienna: #d57a66ff;
-            --blush: #ca6680ff;
-            --hunyadi-yellow: #edc79bff; /* Color actualizado */
-            --light-coral: #d57a66ff; /* Color actualizado */
-            --tea-rose-red: #d45d79ff;
+            --primary: #2C3E50;
+            --secondary: #34495E;
+            --accent: #3498DB;
+            --background: #ECF0F1;
+            --success: #27AE60;
         }
+        
         body {
-            font-family: Arial, sans-serif;
-            background-color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
         }
+
         .login-container {
             background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             text-align: center;
             width: 400px;
         }
+
         .logo {
             width: 120px;
             height: 120px;
@@ -44,7 +44,7 @@
         }
         h2, label {
             margin-bottom: 20px;
-            color: black;
+            color: var(--primary);
         }
         label {
             display: block;
@@ -54,35 +54,42 @@
         }
         input {
             width: 100%;
-            padding: 10px;
+            padding: 0.75rem;
             margin-bottom: 15px;
-            border: 1px solid #ccc;
+            border: 2px solid #e2e8f0;
             border-radius: 8px;
             font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
         }
         button {
             width: 100%;
             padding: 12px;
-            background-color: var(--hunyadi-yellow);
+            background-color: var(--accent);
             color: white;
             border: none;
             border-radius: 8px;
             font-size: 18px;
             cursor: pointer;
             transition: 0.3s;
+            font-weight: 600;
         }
         button:hover {
-            background-color: var(--light-coral);
+            background-color: #2980b9;
         }
         .register-link {
             margin-top: 15px;
             display: block;
             font-size: 14px;
-            color: var(--tea-rose-red);
+            color: var(--secondary);
             text-decoration: none;
         }
         .register-link:hover {
-            text-decoration: underline;
+            color: var(--accent);
+            text-decoration: none;
         }
         @media (max-width: 600px) {
             .login-container {
@@ -111,8 +118,8 @@
         <div class="logo"></div>
         <h2>Iniciar Sesión</h2>
         <form id="loginForm">
-            <label for="username">Usuario (Correo para estudiantes o 'Admin')</label>
-            <input type="text" id="username" placeholder="Ingresa tu usuario o correo" required>
+            <label for="username">Usuario (Nombre de usuario o 'Admin')</label>
+            <input type="text" id="username" placeholder="Ingresa tu nombre de usuario" required>
             
             <label for="password">Contraseña</label>
             <input type="password" id="password" placeholder="Ingresa tu contraseña" required>
@@ -129,14 +136,14 @@
             let password = document.getElementById('password').value;
             
             let users = JSON.parse(localStorage.getItem('users')) || [];
-            let user = users.find(user => (user.username === username || user.email === username) && user.password === password);
+            let user = users.find(user => user.username === username && user.password === password);
             
             if (username === "Admin" && password === "admi123") {
                 window.location.href = "admin/index.html";
             } else if (user) {
                 window.location.href = "estudiantes/index.html";
             } else {
-                alert("Credenciales incorrectas. Asegúrate de ingresar correctamente.");
+                alert("Credenciales incorrectas. Por favor, verifica tu nombre de usuario y contraseña.");
             }
         });
     </script>

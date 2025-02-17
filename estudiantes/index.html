@@ -3,206 +3,532 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estudiantes - Consulta de Horarios e Inscripción</title>
-    <link rel="stylesheet" href="estiloE.css">
+    <title>Portal de Estudiantes</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #3498db;
+            --background: #ecf0f1;
+        }
 
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--background);
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .course-card h3 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+
+        .button {
+            background-color: var(--accent);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: var(--secondary);
+        }
+
+        /* Estilos para el menú de usuario */
+        .user-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            color: white;
+        }
+
+        .user-info:hover {
+            background-color: var(--secondary);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: 0.5rem;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: var(--primary);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--background);
+        }
+
+        .show {
+            display: block;
+        }
+
+        /* Estilos para la tabla de registros */
+        .print-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .print-table th,
+        .print-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .print-table th {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .print-content, .print-content * {
+                visibility: visible;
+            }
+            .print-content {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
+
+        .user-menu {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 100;
+        }
+
+        .user-button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-menu-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border-radius: 4px;
+            min-width: 150px;
+        }
+
+        .user-menu-content a {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .user-menu-content a:hover {
+            background-color: #f0f0f0;
+        }
+
+        .show {
+            display: block;
+        }
+        
+        .print-button {
+            display: block;
+            width: 200px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .print-button:hover {
+            background-color: var(--secondary);
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem auto;
+        }
+
+        .registros-section {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .registros-section.visible {
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>Portal del Estudiante</h1>
-    </header>
-    <nav>
-        <ul>
-            <li><a href="index.html">Dashboard</a></li>
-            <li><a href="profesores.html">Profesores</a></li>
-            <li><a href="horarios.html">Horarios</a></li>
-            <li><a href="cursos.html">Cursos</a></li>
-            <li><a href="../index.html">Salir</a></li>
-
-        </ul>
-    </nav>
-    <main>
-        <div class="form-group">
-            <label for="seleccionarHorario">Seleccionar Tipo de Horario:</label>
-            <select id="seleccionarHorario">
-                <option value="">Elige un tipo de horario...</option>
-                <option value="semana">Entre Semana (Lunes, Miércoles, Viernes)</option>
-                <option value="sabado">Sábado Intensivo</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Seleccionar Curso:</label>
-            <div class="course-container">
-                <div class="course-selection" data-curso="Fotografía">
-                    <img src="icons/fotografia.png" alt="Fotografía" class="course-icon">
-                    <span>Fotografía</span>
-                </div>
-                <div class="course-selection" data-curso="Arte">
-                    <img src="icons/arte.png" alt="Arte" class="course-icon">
-                    <span>Arte</span>
-                </div>
-                <div class="course-selection" data-curso="Canto">
-                    <img src="icons/canto.png" alt="Canto" class="course-icon">
-                    <span>Canto</span>
-                </div>
-                <div class="course-selection" data-curso="Música">
-                    <img src="icons/musica.png" alt="Música" class="course-icon">
-                    <span>Música</span>
-                </div>
-                <div class="course-selection" data-curso="Escultura">
-                    <img src="icons/escultura.png" alt="Escultura" class="course-icon">
-                    <span>Escultura</span>
-                </div>
+        <h1>Portal de Estudiantes</h1>
+        <!-- Mantener el menú de usuario existente -->
+        <div class="user-dropdown">
+            <div class="user-info" onclick="toggleDropdown()">
+                <div class="user-avatar" id="userInitials"></div>
+                <span id="userName"></span>
+            </div>
+            <div class="dropdown-content" id="userDropdown">
+                <a href="#" onclick="handleLogout()">Salir</a>
             </div>
         </div>
-        <button id="registrarEstudiante">Registrar</button>
-        
-        <h2>Horarios Disponibles</h2>
-        <div class="card-container" id="cardContainer"></div>
+    </header>
 
-        <h2>Horarios Inscritos</h2>
-        <div class="card-container" id="cardInscritos"></div>
-        <button id="borrarRegistros">Borrar Horarios Inscritos</button>
-        <button id="imprimirRegistros">Imprimir Registros</button>
-        <!-- Enlace oculto para la descarga de la foto QR.jpg -->
-        <a id="descargarFoto" href="QR.jpg" download style="display: none;"></a>
+    <main>
+        <section class="welcome-section">
+            <h2>Bienvenido al Portal de Estudiantes</h2>
+            <p>Aquí podrás ver tus cursos y gestionar tus registros académicos</p>
+        </section>
+
+        <section class="courses-grid">
+            <div class="course-card">
+                <h3>Matemáticas</h3>
+                <p>Horario: 8:00 AM - 10:00 AM</p>
+                <button class="button" onclick="registrarCurso('Matemáticas', '8:00 AM - 10:00 AM')">Registrar</button>
+            </div>
+            <div class="course-card">
+                <h3>Historia</h3>
+                <p>Horario: 10:30 AM - 12:30 PM</p>
+                <button class="button" onclick="registrarCurso('Historia', '10:30 AM - 12:30 PM')">Registrar</button>
+            </div>
+            <div class="course-card">
+                <h3>Ciencias</h3>
+                <p>Horario: 2:00 PM - 4:00 PM</p>
+                <button class="button" onclick="registrarCurso('Ciencias', '2:00 PM - 4:00 PM')">Registrar</button>
+            </div>
+        </section>
+
+        <!-- Modificar la sección de la tabla de registros -->
+        <section class="registros-section" style="display: block; margin-top: 2rem;">
+            <h2>Mis Cursos Registrados</h2>
+            <table class="print-table">
+                <thead>
+                    <tr>
+                        <th>Curso</th>
+                        <th>Horario</th>
+                        <th>Fecha de Registro</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="cursosRegistrados">
+                </tbody>
+            </table>
+        </section>
+
+        <div class="buttons-container">
+            <button class="print-button" onclick="imprimirRegistros()">
+                Imprimir Registros
+            </button>
+            <button class="print-button" onclick="mostrarRegistros()">
+                Mostrar Registros
+            </button>
+        </div>
+
+        <section id="registrosSection" class="registros-section">
+            <h2>Registros de Estudiante</h2>
+            <table class="print-table">
+                <thead>
+                    <tr>
+                        <th>Curso</th>
+                        <th>Horario</th>
+                        <th>Fecha de Registro</th>
+                    </tr>
+                </thead>
+                <tbody id="registrosTableBody">
+                </tbody>
+            </table>
+        </section>
     </main>
-    <footer>
-        <p>&copy; 2023 Portal del Estudiante de Modelos de Procesos</p>
-    </footer>
+
+    <!-- Contenedor oculto para la impresión -->
+    <div id="printArea" style="display: none;">
+        <div class="print-content">
+            <h2>Registros de Estudiante</h2>
+            <table class="print-table">
+                <thead>
+                    <tr>
+                        <th>Curso</th>
+                        <th>Horario</th>
+                        <th>Fecha de Registro</th>
+                    </tr>
+                </thead>
+                <tbody id="registrosBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <script>
-        let selectedCourse = '';
+        // Función para obtener iniciales del nombre
+        function getInitials(name) {
+            return name
+                .split(' ')
+                .map(word => word[0])
+                .join('')
+                .toUpperCase();
+        }
 
-        document.querySelectorAll('.course-selection').forEach(course => {
-            course.addEventListener('click', function() {
-                document.querySelectorAll('.course-selection').forEach(c => c.classList.remove('selected'));
-                this.classList.add('selected');
-                selectedCourse = this.getAttribute('data-curso');
-            });
+        // Mostrar información del usuario
+        document.addEventListener('DOMContentLoaded', function() {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const currentUser = users[users.length - 1];
+            if (currentUser) {
+                document.getElementById('userName').textContent = currentUser.fullName;
+                document.getElementById('userInitials').textContent = getInitials(currentUser.fullName);
+            }
         });
 
-        function cargarHorarios() {
-            const horarios = JSON.parse(localStorage.getItem('horarios')) || [];
-            const cardContainer = document.getElementById('cardContainer');
-
-            cardContainer.innerHTML = '';
-
-            horarios.forEach(horario => {
-                const card = document.createElement('div');
-                card.classList.add('card');
-                card.innerHTML = `
-                    <h3>${horario.dia} - ${horario.hora}</h3>
-                    <p>Curso: ${horario.curso}</p>
-                    <p style="color: transparent;">Profesor: ${horario.profesor}</p>
-                    <p>Cupos: ${horario.cupos}</p>
-                `;
-                cardContainer.appendChild(card);
-            });
+        // Toggle dropdown
+        function toggleDropdown() {
+            document.getElementById('userDropdown').classList.toggle('show');
         }
 
-        function cargarHorariosInscritos() {
-            const registros = JSON.parse(localStorage.getItem('registros')) || [];
-            const cardInscritos = document.getElementById('cardInscritos');
-
-            cardInscritos.innerHTML = '';
-
-            registros.forEach(registro => {
-                const card = document.createElement('div');
-                card.classList.add('card');
-                let dias = '';
-                if (registro.horario === 'Entre Semana') {
-                    dias = 'Lunes, Miércoles, Viernes';
-                } else {
-                    dias = 'Sábado';
-                }
-                card.innerHTML = `
-                    <h3>${dias}</h3>
-                    <p>Curso: ${registro.curso}</p>
-                `;
-                cardInscritos.appendChild(card);
-            });
-        }
-
-        function registrarEstudiante() {
-    const tipoHorario = document.getElementById('seleccionarHorario').value;
-
-    if (tipoHorario === '' || selectedCourse === '') {
-        alert('Por favor, completa todos los campos.');
-        return;
-    }
-
-    const horarios = JSON.parse(localStorage.getItem('horarios')) || [];
-    let cuposDisponibles = false;
-
-    // Filtrar los horarios según el tipo de horario y curso seleccionado
-    const horariosSeleccionados = horarios.filter(horario => 
-        (tipoHorario === 'sabado' && horario.dia === 'Sábado' && horario.curso === selectedCourse) ||
-        (tipoHorario === 'semana' && horario.dia !== 'Sábado' && horario.curso === selectedCourse)
-    );
-
-    // Verificar los cupos disponibles para los horarios seleccionados
-    horariosSeleccionados.forEach(horario => {
-        if (horario.cupos > 0) {
-            cuposDisponibles = true;
-            horario.cupos--;  // Reducir el cupo disponible
-        }
-    });
-
-    // Si no hay cupos disponibles, mostrar un mensaje
-    if (!cuposDisponibles) {
-        alert('No hay cupos disponibles para el curso seleccionado en el horario elegido.');
-        return;
-    }
-
-    // Actualizar el localStorage con los nuevos cupos después de la inscripción
-    localStorage.setItem('horarios', JSON.stringify(horarios));
-
-    // Agregar el registro a los horarios inscritos
-    const registros = JSON.parse(localStorage.getItem('registros')) || [];
-    registros.push({
-        horario: tipoHorario === 'sabado' ? 'Sábado Intensivo' : 'Entre Semana',
-        curso: selectedCourse
-    });
-    localStorage.setItem('registros', JSON.stringify(registros));
-
-    alert('Registro exitoso.');
-    cargarHorariosInscritos(); // Actualizar la lista de horarios inscritos
-    cargarHorarios(); // Actualizar la lista de horarios disponibles con los cupos actualizados
-}
-
-
-
-        document.getElementById('registrarEstudiante').addEventListener('click', registrarEstudiante);
-        document.getElementById('imprimirRegistros').addEventListener('click', function() {
-            const registros = JSON.parse(localStorage.getItem('registros')) || [];
-            console.log(registros);
-            document.getElementById('descargarFoto').click();
-        });
-
-        document.getElementById('borrarRegistros').addEventListener('click', function() {
-            const registros = JSON.parse(localStorage.getItem('registros')) || [];
-            const horarios = JSON.parse(localStorage.getItem('horarios')) || [];
-
-            // Restaurar los cupos de los horarios
-            registros.forEach(registro => {
-                horarios.forEach(horario => {
-                    if (horario.curso === registro.curso) {
-                        horario.cupos++; // Restablece el cupo
+        // Cerrar dropdown al hacer clic fuera
+        window.onclick = function(event) {
+            if (!event.target.matches('.user-info') && !event.target.matches('.user-info *')) {
+                const dropdowns = document.getElementsByClassName('dropdown-content');
+                for (let dropdown of dropdowns) {
+                    if (dropdown.classList.contains('show')) {
+                        dropdown.classList.remove('show');
                     }
-                });
+                }
+            }
+        }
+
+        // Función para imprimir registros
+        function imprimirRegistros() {
+            const registros = JSON.parse(localStorage.getItem('registros')) || [];
+            const tbody = document.getElementById('registrosBody');
+            tbody.innerHTML = '';
+
+            registros.forEach(registro => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${registro.curso}</td>
+                    <td>${registro.horario}</td>
+                    <td>${new Date().toLocaleDateString()}</td>
+                `;
+                tbody.appendChild(tr);
             });
 
-            // Borrar los registros
-            localStorage.removeItem('registros');
-            localStorage.setItem('horarios', JSON.stringify(horarios));
+            // Imprimir
+            const printArea = document.getElementById('printArea');
+            printArea.style.display = 'block';
+            window.print();
+            printArea.style.display = 'none';
+        }
 
-            cargarHorarios(); // Actualiza los horarios disponibles
-            cargarHorariosInscritos(); // Actualiza la lista de horarios inscritos (vacía ahora)
+        function handleLogout() {
+            window.location.href = "../index.html";
+        }
+
+        function toggleMenu() {
+            document.getElementById('userMenuContent').classList.toggle('show');
+        }
+
+        function cerrarSesion() {
+            window.location.href = '../index.html';
+        }
+
+        // Cerrar el menú si se hace clic fuera de él
+        window.onclick = function(event) {
+            if (!event.target.matches('.user-button')) {
+                var dropdowns = document.getElementsByClassName("user-menu-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        // Mostrar el nombre del usuario actual
+        document.addEventListener('DOMContentLoaded', function() {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const currentUser = users[users.length - 1];
+            if (currentUser) {
+                document.getElementById('userName').textContent = currentUser.fullName;
+            }
         });
 
-        cargarHorarios();
-        cargarHorariosInscritos();
+        // Reemplazar la función registrarCurso
+        function registrarCurso(curso, horario) {
+            const registros = JSON.parse(localStorage.getItem('registros')) || [];
+            
+            // Verificar si el curso ya está registrado
+            const cursoExistente = registros.find(r => r.curso === curso);
+            if (cursoExistente) {
+                alert(`Ya estás registrado en el curso de ${curso}`);
+                return;
+            }
+
+            // Verificar conflicto de horarios
+            const horarioExistente = registros.find(r => r.horario === horario);
+            if (horarioExistente) {
+                alert(`Ya tienes un curso registrado en el horario ${horario} (${horarioExistente.curso})`);
+                return;
+            }
+
+            // Agregar nuevo registro
+            registros.push({
+                curso: curso,
+                horario: horario,
+                fecha: new Date().toLocaleDateString()
+            });
+            localStorage.setItem('registros', JSON.stringify(registros));
+            
+            // Actualizar la tabla
+            actualizarTablaRegistros();
+            alert(`Te has registrado exitosamente en ${curso}`);
+        }
+
+        // Modificar la función actualizarTablaRegistros
+        function actualizarTablaRegistros() {
+            const registros = JSON.parse(localStorage.getItem('registros')) || [];
+            const tbody = document.getElementById('cursosRegistrados');
+            tbody.innerHTML = '';
+            
+            registros.forEach((registro, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${registro.curso}</td>
+                    <td>${registro.horario}</td>
+                    <td>${registro.fecha}</td>
+                    <td>
+                        <button class="button" 
+                                style="background-color: #e74c3c;" 
+                                onclick="eliminarCurso(${index})">
+                            Eliminar
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Agregar la función eliminarCurso
+        function eliminarCurso(index) {
+            if (confirm('¿Estás seguro de que deseas eliminar este curso?')) {
+                const registros = JSON.parse(localStorage.getItem('registros')) || [];
+                registros.splice(index, 1);
+                localStorage.setItem('registros', JSON.stringify(registros));
+                actualizarTablaRegistros();
+            }
+        }
+
+        // Llamar a actualizarTablaRegistros cuando se carga la página
+        document.addEventListener('DOMContentLoaded', function() {
+            // ...existing DOMContentLoaded code...
+            actualizarTablaRegistros();
+        });
+
+        function mostrarRegistros() {
+            const registros = JSON.parse(localStorage.getItem('registros')) || [];
+            const tbody = document.getElementById('registrosTableBody');
+            const section = document.getElementById('registrosSection');
+            
+            tbody.innerHTML = '';
+            
+            registros.forEach(registro => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${registro.curso}</td>
+                    <td>${registro.horario}</td>
+                    <td>${registro.fecha}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            section.classList.toggle('visible');
+        }
     </script>
 </body>
 </html>

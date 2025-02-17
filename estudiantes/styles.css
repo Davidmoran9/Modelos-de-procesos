@@ -2,11 +2,11 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: var(--sunset); /* Color actualizado */
+    background-color: var(--background); /* Color actualizado */
 }
 
 header {
-    background-color: var(--eggplant); /* Color actualizado */
+    background-color: var(--primary); /* Color actualizado */
     color: #fff;
     padding: 1rem;
     text-align: center;
@@ -25,11 +25,11 @@ section {
 }
 
 h1, h2 {
-    color: var(--eggplant); /* Color actualizado */
+    color: var(--primary); /* Color actualizado */
 }
 
 button {
-    background-color: var(--blush); /* Color actualizado */
+    background-color: var(--accent); /* Color actualizado */
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -39,11 +39,11 @@ button {
 }
 
 button:hover {
-    background-color: var(--burnt-sienna); /* Color actualizado */
+    background-color: var(--success); /* Color actualizado */
 }
 
 footer {
-    background-color: var(--eggplant); /* Color actualizado */
+    background-color: var(--primary); /* Color actualizado */
     color: #fff;
     text-align: center;
     padding: 1rem;
