@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-    renderizarProfesores(); // Cargar profesores guardados al inicio
+    renderizarProfesores();
+    renderizarHorarios();
+    renderizarCursos();
 });
 
 // Función para mostrar una notificación
@@ -16,7 +18,7 @@ function showNotification(message, type) {
 // Función para confirmar acciones antes de ejecutarlas
 function confirmAction(action, callback) {
     if (confirm(`¿Estás seguro de que deseas ${action.toLowerCase()}?`)) {
-        callback(); // Ejecuta la acción si el usuario confirma
+        callback();
         showNotification(`${action} realizado con éxito.`, "success");
     } else {
         showNotification(`${action} cancelado.`, "error");
@@ -29,7 +31,16 @@ function toggleForm(formId) {
     form.classList.toggle("hidden");
 }
 
-// Función para agregar un nuevo profesor
+// Función para limpiar los campos de un formulario
+function limpiarFormulario(formId) {
+    const form = document.getElementById(formId);
+    if (form) {
+        form.querySelectorAll("input").forEach(input => (input.value = ""));
+    }
+}
+
+//******************************PROFESORES******************************
+
 function addProfesor(event) {
     event.preventDefault();
 
@@ -41,42 +52,28 @@ function addProfesor(event) {
         return;
     }
 
-    // Obtener los profesores actuales del localStorage, o un arreglo vacío si no hay nada
     const profesores = JSON.parse(localStorage.getItem("profesores")) || [];
 
-    // Verificar si ya existe el profesor
     const existe = profesores.some(profesor => profesor.nombre === nombre && profesor.departamento === departamento);
     if (existe) {
         showNotification("El profesor ya existe.", "error");
         return;
     }
 
-    // Crear un nuevo profesor y agregarlo al arreglo
-    const nuevoProfesor = { nombre, departamento };
-    profesores.push(nuevoProfesor);
+    profesores.push({ nombre, departamento });
 
-    // Guardar el arreglo actualizado en el localStorage
     localStorage.setItem("profesores", JSON.stringify(profesores));
 
-    // Actualizar la tabla
     renderizarProfesores();
-
-    // Limpiar formulario
     limpiarFormulario("profesorForm");
-
-    // Mostrar notificación
-    showNotification("Profesor agregado exitosamente.", "success");
-
-    // Ocultar formulario
     toggleForm("profesorForm");
+    showNotification("Profesor agregado exitosamente.", "success");
 }
 
-// Función para renderizar los profesores guardados
 function renderizarProfesores() {
     const profesores = JSON.parse(localStorage.getItem("profesores")) || [];
     const tableBody = document.getElementById("profesoresTableBody");
 
-    // Limpiar la tabla antes de volver a renderizarla
     tableBody.innerHTML = "";
 
     profesores.forEach((profesor, index) => {
@@ -90,28 +87,21 @@ function renderizarProfesores() {
     });
 }
 
-// Función para eliminar un profesor
 function eliminarProfesor(index) {
     const profesores = JSON.parse(localStorage.getItem("profesores")) || [];
 
-    profesores.splice(index, 1); // Eliminar el profesor
+    profesores.splice(index, 1);
 
-    localStorage.setItem("profesores", JSON.stringify(profesores)); // Actualizar almacenamiento
+    localStorage.setItem("profesores", JSON.stringify(profesores));
 
-    renderizarProfesores(); // Refrescar tabla
+    renderizarProfesores();
 }
 
-// Función para limpiar los campos de un formulario
-function limpiarFormulario(formId) {
-    const form = document.getElementById(formId);
-    if (form) {
-        form.querySelectorAll("input").forEach(input => (input.value = ""));
-    }
-}
+//******************************HORARIOS******************************
 
-// Función para agregar un horario
 function addHorario(event) {
     event.preventDefault();
+
     const curso = document.getElementById("curso").value.trim();
     const horario = document.getElementById("horario").value.trim();
 
@@ -120,23 +110,56 @@ function addHorario(event) {
         return;
     }
 
-    const tableBody = document.getElementById("horariosTableBody");
-    const row = document.createElement("tr");
-    row.innerHTML = `
-        <td>${curso}</td>
-        <td>${horario}</td>
-        <td><button onclick="confirmAction('Eliminar Horario', () => row.remove())">Eliminar</button></td>
-    `;
-    tableBody.appendChild(row);
+    const horarios = JSON.parse(localStorage.getItem("horarios")) || [];
 
+    const existe = horarios.some(h => h.curso === curso && h.horario === horario);
+    if (existe) {
+        showNotification("Este horario ya está registrado.", "error");
+        return;
+    }
+
+    horarios.push({ curso, horario });
+
+    localStorage.setItem("horarios", JSON.stringify(horarios));
+
+    renderizarHorarios();
     limpiarFormulario("horarioForm");
     toggleForm("horarioForm");
     showNotification("Horario agregado exitosamente.", "success");
 }
 
-// Función para agregar un curso
+function renderizarHorarios() {
+    const horarios = JSON.parse(localStorage.getItem("horarios")) || [];
+    const tableBody = document.getElementById("horariosTableBody");
+
+    tableBody.innerHTML = "";
+
+    horarios.forEach((horario, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${horario.curso}</td>
+            <td>${horario.horario}</td>
+            <td><button onclick="confirmAction('Eliminar Horario', () => eliminarHorario(${index}))">Eliminar</button></td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+function eliminarHorario(index) {
+    const horarios = JSON.parse(localStorage.getItem("horarios")) || [];
+
+    horarios.splice(index, 1);
+
+    localStorage.setItem("horarios", JSON.stringify(horarios));
+
+    renderizarHorarios();
+}
+
+//******************************CURSOS******************************
+
 function addCurso(event) {
     event.preventDefault();
+
     const nombreCurso = document.getElementById("nombreCurso").value.trim();
     const numCupos = document.getElementById("numCupos").value.trim();
     const descripcion = document.getElementById("descripcion").value.trim();
@@ -146,16 +169,48 @@ function addCurso(event) {
         return;
     }
 
-    const tableBody = document.getElementById("cursosTableBody");
-    const row = document.createElement("tr");
-    row.innerHTML = `
-        <td>${nombreCurso}</td>
-        <td>${numCupos}</td>
-        <td>${descripcion}</td>
-    `;
-    tableBody.appendChild(row);
+    const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
 
+    const existe = cursos.some(curso => curso.nombreCurso === nombreCurso);
+    if (existe) {
+        showNotification("Este curso ya está registrado.", "error");
+        return;
+    }
+
+    cursos.push({ nombreCurso, numCupos, descripcion });
+
+    localStorage.setItem("cursos", JSON.stringify(cursos));
+
+    renderizarCursos();
     limpiarFormulario("cursoForm");
     toggleForm("cursoForm");
     showNotification("Curso agregado exitosamente.", "success");
+}
+
+function renderizarCursos() {
+    const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
+    const tableBody = document.getElementById("cursosTableBody");
+
+    tableBody.innerHTML = "";
+
+    cursos.forEach((curso, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${curso.nombreCurso}</td>
+            <td>${curso.numCupos}</td>
+            <td>${curso.descripcion}</td>
+            <td><button onclick="confirmAction('Eliminar Curso', () => eliminarCurso(${index}))">Eliminar</button></td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+function eliminarCurso(index) {
+    const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
+
+    cursos.splice(index, 1);
+
+    localStorage.setItem("cursos", JSON.stringify(cursos));
+
+    renderizarCursos();
 }
